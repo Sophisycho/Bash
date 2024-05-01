@@ -1,0 +1,38 @@
+#!/bin/bash
+
+
+# grep接收三個參數，第一個是搜尋的字串、第二個是參數、第三個是文件名(可以多個文件)
+
+TARGET_STRING="$1"
+TOTAL_ARG="$#"
+
+
+
+# 寫一個function檢測第二個參數是不是-號開頭或是匹配-n、-l、-i、-v、-x 如果匹配就傳入參數的function
+
+function check_arg(){
+    if [[ $2 == '-n' ]] || [[  $2 == '-l'  ]] || [[ $2 == '-i' ]] || [[ $2 == '-v' ]] || [[ $2 == '-x' ]]; then
+        echo "Argument correct"
+    elif 
+        [[ $2 =~ ^- ]]; then
+        echo "Please enter right argument"
+    else
+        echo "check file name $2"
+    fi
+
+}
+
+
+# else 如果不匹配以上就代表第二個參數是filenamm，檢查file是否存在，存在就傳入grep函數
+
+# 主函數grep，負責grep核心功能。
+
+# 參數函數區
+
+function dash_i(){
+
+
+}
+
+# 主程式區
+check_arg $TARGET_STRING $2
