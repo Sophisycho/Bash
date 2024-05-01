@@ -3,21 +3,43 @@
 
 # grep接收三個參數，第一個是搜尋的字串、第二個是參數、第三個是文件名(可以多個文件)
 
-TARGET_STRING="$1"
-TOTAL_ARG="$#"
+TOTAL_ARG=$#
+
+ARG=$1
+STRING=$2
+FILENAME=$3
 
 
 
 # 寫一個function檢測第二個參數是不是-號開頭或是匹配-n、-l、-i、-v、-x 如果匹配就傳入參數的function
 
 function check_arg(){
-    if [[ $2 == '-n' ]] || [[  $2 == '-l'  ]] || [[ $2 == '-i' ]] || [[ $2 == '-v' ]] || [[ $2 == '-x' ]]; then
+    if [[ $1 == '-n' ]] || [[  $1 == '-l'  ]] || [[ $1 == '-i' ]] || [[ $1 == '-v' ]] || [[ $1 == '-x' ]]; then
         echo "Argument correct"
+        case $1 in
+            -n)
+                echo "參數是-n"
+                ;;
+            -l)
+                echo "參數是-l"
+                ;;
+            -i)
+                echo "參數是-i"
+                dash_i $2 $3
+                ;;
+            -v)
+                echo "參數是-v"
+                ;;
+            -x)
+                echo "參數是-x"
+                ;;
+        esac
     elif 
-        [[ $2 =~ ^- ]]; then
+        [[ $1 =~ ^- ]]; then
         echo "Please enter right argument"
     else
         echo "check file name $2"
+        grepp $1 $2
     fi
 
 }
@@ -26,13 +48,27 @@ function check_arg(){
 # else 如果不匹配以上就代表第二個參數是filenamm，檢查file是否存在，存在就傳入grep函數
 
 # 主函數grep，負責grep核心功能。
+function grepp(){
+    RESULT=$(awk '/'"$1"'/' "$2")
+    if [[ $RESULT ]]; then
+        echo "$RESULT"
+    else
+        echo "沒找到目標字串"
+    fi
+}
 
 # 參數函數區
 
 function dash_i(){
-
+    shopt -s nocasematch
+    grepp $STRING $FILENAME
+    shopt -s nocasematch
 
 }
 
 # 主程式區
-check_arg $TARGET_STRING $2
+check_arg $1 $2
+
+
+
+
