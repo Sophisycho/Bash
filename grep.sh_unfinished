@@ -19,6 +19,7 @@ function check_arg(){
         case $1 in
             -n)
                 echo "參數是-n"
+                dash_n $2 $3
                 ;;
             -l)
                 echo "參數是-l"
@@ -63,8 +64,14 @@ function dash_i(){
     shopt -s nocasematch
     grepp $STRING $FILENAME
     shopt -s nocasematch
+}
+
+function dash_n(){
+
+
 
 }
+
 
 # 主程式區
 check_arg $1 $2
